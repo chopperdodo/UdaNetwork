@@ -102,7 +102,6 @@ def get_rates(iface, nsamples=1, period=30,
     iface2 = 's2-eth1'
     while nsamples:
         nsamples -= 1
-
         txbytes1 = get_txbytes(iface1)
         txbytes2 = get_txbytes(iface2)
     
@@ -132,6 +131,7 @@ def run_topology_experiment(net):
     monitor = Process(target=monitor_devs_ng, 
             args=('%s/bwm.txt' % args.dir, 1.0))
     monitor.start()
+    
     start_tcpprobe()
 
     # Get receiver and clients
@@ -155,13 +155,10 @@ def run_topology_experiment(net):
     print rates
 
     sender.waitOutput()
-
     recvr.cmd('kill %iperf')
-
     # Shut down monitors
     monitor.terminate()
     stop_tcpprobe()
-
 def check_prereqs():
     "Check for necessary programs"
     prereqs = ['telnet', 'bwm-ng', 'iperf', 'ping']
